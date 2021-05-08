@@ -12,13 +12,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// Custom Class Headers
+#include <VAO.h>
+#include <VBO.h>
+#include <EBO.h>
+#include <Shader.h>
+
 // Reference: https://github.com/nothings/stb/blob/master/stb_image.h#L4
 // To use stb_image, add this in *one* C++ source file.
-//     #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 // Define Some Constants
-const int mWidth = 1280;
-const int mHeight = 800;
+const int width = 1280;
+const int height = 800;
 
 #endif //~ Glitter Header
