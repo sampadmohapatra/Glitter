@@ -1,9 +1,17 @@
-#version 330 core
+#version 400 core
 
 in vec3 vCol;
+in vec2 vTexCoord;
+
 out vec4 vFragColor;
+
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+
+uniform float mixFactor;
 
 void main()
 {
-   vFragColor = vec4(vCol, 1.0f);
+    vFragColor = mix(texture(texture1, vTexCoord), texture(texture2, vTexCoord), mixFactor);
+//    vFragColor = texture(texture1, vTexCoord);
 }

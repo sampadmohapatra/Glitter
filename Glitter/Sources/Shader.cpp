@@ -1,8 +1,7 @@
 #include"Shader.h"
 
 // Reads a text file and outputs a string with everything in the text file
-std::string get_file_contents(const char* filename, std::string relpath)
-{
+std::string get_file_contents(const char* filename, std::string relpath) {
     std::string newfilename {filename};
     std::ifstream in((relpath+newfilename).c_str(), std::ios::binary);
     if (in)
@@ -19,8 +18,8 @@ std::string get_file_contents(const char* filename, std::string relpath)
 }
 
 // Constructor that build the Shader Program from 2 different shaders
-Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* relpath)
-{
+Shader::Shader(const char* vertexFile, const char* fragmentFile,
+               const char* relpath) {
     // Read vertexFile and fragmentFile and store the strings
     std::string vertexCode = get_file_contents(vertexFile, relpath);
     std::string fragmentCode = get_file_contents(fragmentFile, relpath);
@@ -60,24 +59,38 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* rel
     // Delete the now useless Vertex and Fragment Shader objects
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
 }
 
+// Set a Uniform in the Shader Program
+//void Shader::setUniform(const char* uniformName, const std::vector<> value) {
+//    // Gets the location of the uniform
+//    GLuint uniformID = glGetUniformLocation(ID, uniformName);
+//    // Shader needs to be activated before changing the value of a uniform
+//    Activate();
+//    // Sets the value of the uniform
+//    glUniform1i(uniformID, value);
+//    glUniform2i(uniformID, value);
+//    glUniform3i(uniformID, value);
+//    glUniform4i(uniformID, value);
+//    glUniform1f(uniformID, value);
+//    glUniform2f(uniformID, value);
+//    glUniform3f(uniformID, value);
+//    glUniform4f(uniformID, value);
+//
+//}
+
 // Activates the Shader Program
-void Shader::Activate()
-{
+void Shader::Activate() const {
     glUseProgram(ID);
 }
 
 // Deletes the Shader Program
-void Shader::Delete()
-{
+void Shader::Delete() const {
     glDeleteProgram(ID);
 }
 
 // Checks if the different Shaders have compiled properly
-void Shader::compileErrors(unsigned int shader, const char* type)
-{
+void Shader::compileErrors(unsigned int shader, const char* type) const {
     // Stores status of compilation
     GLint hasCompiled;
     // Character array to store error message in
@@ -88,7 +101,8 @@ void Shader::compileErrors(unsigned int shader, const char* type)
         if (hasCompiled == GL_FALSE)
         {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n" << infoLog << std::endl;
+            std::cout << "SHADER_COMPILATION_ERROR for:" << type
+                        << "\n" << infoLog << std::endl;
         }
     }
     else
@@ -97,7 +111,8 @@ void Shader::compileErrors(unsigned int shader, const char* type)
         if (hasCompiled == GL_FALSE)
         {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "SHADER_LINKING_ERROR for:" << type << "\n" << infoLog << std::endl;
+            std::cout << "SHADER_LINKING_ERROR for:" << type
+                        << "\n" << infoLog << std::endl;
         }
     }
 }

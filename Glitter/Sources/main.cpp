@@ -18,22 +18,16 @@ void processInput(GLFWwindow* window);
 
 // Data
 float vertices[] {
-        0.5f,  0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left
-};
-
-float colors[] {
-        0.5f,  0.5f, 0.0f,  // top right
-        0.5f, 0.1f, 0.0f,  // bottom right
-        0.2f, 0.3f, 0.4f,  // bottom left
-        0.22f,  0.71f, 0.63f   // top left
+        // Vertex Coord          Color              Texture Coord
+        -0.5f, -0.5f, 0.0f,   0.2f,  0.2f, 0.0f,     0.0f, 0.0f,  // Lower left corner
+        -0.5f,  0.5f, 0.0f,   0.2f, 0.1f, 0.0f,      0.0f, 1.0f,  // Upper left corner
+        0.5f,  0.5f, 0.0f,    0.2f, 0.3f, 0.4f,      1.0f, 1.0f,  // Upper right corner
+        0.5f, -0.5f, 0.0f,    0.2f,  0.31f, 0.33f,  1.0f, 0.0f   // Lower right corner
 };
 
 unsigned int indices[] = {  // note that we start from 0!
-        0, 1, 3,   // first triangle
-        1, 2, 3    // second triangle
+        0, 2, 1,   // Upper triangle
+        0, 3, 2   // Lower triangle
 };
 
 int main(int argc, char * argv[]) {
@@ -45,7 +39,8 @@ int main(int argc, char * argv[]) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    auto window = glfwCreateWindow(width, height, "OpenGL", nullptr, nullptr);
+    auto window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL",
+                                   nullptr, nullptr);
 
     // Check for Valid Context
     if (window == nullptr) {
@@ -55,14 +50,13 @@ int main(int argc, char * argv[]) {
 
     // Create Context and Load OpenGL Functions
     glfwMakeContextCurrent(window);
-//    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     if (!gladLoadGL()) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, WIDTH, HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Create and bind buffers. Buffer data.
@@ -71,43 +65,55 @@ int main(int argc, char * argv[]) {
 
     VBO VBO1(vertices, sizeof(vertices));
     VBO1.Bind();
-    VAO1.LinkAttrib(VBO1, 0, 3
-                    , GL_FLOAT, 3*sizeof(float), (void*)0);
-
-    VBO VBO2(colors, sizeof(colors));
-    VBO2.Bind();
-    VAO1.LinkAttrib(VBO2, 1, 3
-                    , GL_FLOAT, 3*sizeof(float), (void*)0);
+    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *) 0);
+    VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *) (3 * sizeof(float)));
 
     EBO EBO1(indices, sizeof(indices));
     EBO1.Bind();
 
+    // Create shaders and Link with shader program
+    Shader shaderProgram("default.vert", "default.frag",
+                         R"(..\..\Glitter\Shaders\)");
+
+    // texture coordinates buffered in VBO
+    VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *) (6 * sizeof(float)));
+
+    // textures
+    // --------
+    Texture texture1("container.jpg", GL_TEXTURE_2D, GL_RGB);
+    shaderProgram.setUniform<int>("texture1", {0});
+    Texture texture2("awesomeface.png", GL_TEXTURE_2D, GL_RGBA);
+    shaderProgram.setUniform<int>("texture2", {1});
+
+    shaderProgram.setUniform<float>("mixFactor", {0.2});
+
     VAO1.Unbind();
     VBO1.Unbind();
-    VBO2.Unbind();
     EBO1.Unbind();
-
-    // Create shaders and Link with shader program
-    Shader shaderProgram("default.vert", "default.frag"
-                          , R"(..\..\Glitter\Shaders\)");
 
     // Rendering Loop
     while (glfwWindowShouldClose(window) == false) {
         processInput(window);
 
-        // Enable Shader Program
-        shaderProgram.Activate();
-
         // Background Fill Color
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        texture1.Activate(GL_TEXTURE0);
+        texture2.Activate(GL_TEXTURE1);
+
+        // Enable Shader Program
+        shaderProgram.Activate();
+
         VAO1.Bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Flip Buffers and Draw
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }   glfwTerminate();
+    }
+
+    glfwTerminate();
     return EXIT_SUCCESS;
 }
 
