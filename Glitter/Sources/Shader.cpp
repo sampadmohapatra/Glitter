@@ -61,23 +61,14 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile,
     glDeleteShader(fragmentShader);
 }
 
-// Set a Uniform in the Shader Program
-//void Shader::setUniform(const char* uniformName, const std::vector<> value) {
-//    // Gets the location of the uniform
-//    GLuint uniformID = glGetUniformLocation(ID, uniformName);
-//    // Shader needs to be activated before changing the value of a uniform
-//    Activate();
-//    // Sets the value of the uniform
-//    glUniform1i(uniformID, value);
-//    glUniform2i(uniformID, value);
-//    glUniform3i(uniformID, value);
-//    glUniform4i(uniformID, value);
-//    glUniform1f(uniformID, value);
-//    glUniform2f(uniformID, value);
-//    glUniform3f(uniformID, value);
-//    glUniform4f(uniformID, value);
-//
-//}
+void Shader::setUniformMatrix4fv(const char* uniformName, const glm::mat4& mat) {
+    // Gets the location of the uniform
+    GLuint uniformID = glGetUniformLocation(ID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    Activate();
+    // Sets the value of the uniform
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(mat));
+}
 
 // Activates the Shader Program
 void Shader::Activate() const {

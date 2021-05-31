@@ -9,7 +9,10 @@
 #include <assimp/scene.h>
 #include <btBulletDynamicsCommon.h>
 #include <glad/glad.h>
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 // Custom Class Headers

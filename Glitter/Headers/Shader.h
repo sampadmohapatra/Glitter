@@ -9,6 +9,8 @@
 #include <cerrno>
 #include <vector>
 #include <type_traits>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 std::string get_file_contents(const char* filename, std::string relpath);
 
@@ -25,6 +27,8 @@ public:
     // TODO Need to see how to implement for glUniform(n)fv()
     template <typename T>
     void setUniform(const char* uniformName, const std::vector<T> value);
+
+    void setUniformMatrix4fv(const char* uniformName, const glm::mat4& mat);
 
     // Activates the Shader Program
     void Activate() const;

@@ -65,8 +65,10 @@ int main(int argc, char * argv[]) {
 
     VBO VBO1(vertices, sizeof(vertices));
     VBO1.Bind();
-    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *) 0);
-    VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *) (3 * sizeof(float)));
+    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT,
+                    8 * sizeof(float), (void *) 0);
+    VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT,
+                    8 * sizeof(float), (void *) (3 * sizeof(float)));
 
     EBO EBO1(indices, sizeof(indices));
     EBO1.Bind();
@@ -76,7 +78,8 @@ int main(int argc, char * argv[]) {
                          R"(..\..\Glitter\Shaders\)");
 
     // texture coordinates buffered in VBO
-    VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *) (6 * sizeof(float)));
+    VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float),
+                    (void *) (6 * sizeof(float)));
 
     // textures
     // --------
@@ -90,6 +93,9 @@ int main(int argc, char * argv[]) {
     VAO1.Unbind();
     VBO1.Unbind();
     EBO1.Unbind();
+
+    glm::mat4 trans = glm::mat4(1.0f);
+    glm::mat4 translator, rotator, scaler;
 
     // Rendering Loop
     while (glfwWindowShouldClose(window) == false) {
@@ -106,6 +112,23 @@ int main(int argc, char * argv[]) {
         shaderProgram.Activate();
 
         VAO1.Bind();
+
+        // Note: Below three transforms create T*R*S.
+        // They haven't yet been applied to any matrix.
+        translator = glm::translate(trans, glm::vec3(0.5, -0.5, 0.0));
+        rotator = glm::rotate(translator, (float)glfwGetTime(),
+                              glm::vec3(0.0, 0.0, 1.0));
+        scaler = glm::scale(rotator, glm::vec3(0.5, 0.5, 0.5));
+
+        shaderProgram.setUniformMatrix4fv("transform", scaler);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        translator = glm::translate(trans, glm::vec3(-0.5, 0.5, 0.0));
+        rotator = glm::rotate(translator, (float)glfwGetTime(),
+                              glm::vec3(0.0, 0.0, 1.0));
+        scaler = glm::scale(rotator, glm::vec3(0.5, 0.5, 0.5));
+        shaderProgram.setUniformMatrix4fv("transform", scaler);
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Flip Buffers and Draw
