@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cerrno>
 #include <vector>
-#include <type_traits>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -24,11 +23,10 @@ public:
            const char* relpath="");
 
     // Set a Uniform in the Shader Program
-    // TODO Need to see how to implement for glUniform(n)fv()
-    template <typename T>
-    void setUniform(const char* uniformName, const std::vector<T> value);
-
-    void setUniformMatrix4fv(const char* uniformName, const glm::mat4& mat);
+    void setUniformi(const char* uniformName, std::vector<int> value);
+    void setUniformf(const char* uniformName, std::vector<float> value);
+    void setUniformui(const char* uniformName, std::vector<unsigned int> value);
+    void setUniformMat4(const char* uniformName, std::vector<glm::mat4> value);
 
     // Activates the Shader Program
     void Activate() const;
@@ -39,21 +37,4 @@ private:
     void compileErrors(unsigned int shader, const char* type) const;
 };
 
-// Set a Uniform in the Shader Program
-template <typename T>
-void Shader::setUniform(const char* uniformName, const std::vector<T> value) {
-    // Gets the location of the uniform
-    GLuint uniformID = glGetUniformLocation(ID, uniformName);
-    // Shader needs to be activated before changing the value of a uniform
-    Activate();
-    // Sets the value of the uniform
-    if(std::is_same<T, int>::value) {
-        if (value.size() == 1)
-            glUniform1i(uniformID, value[0]);
-    }
-    else if(std::is_same<T, float>::value) {
-        if (value.size() == 1)
-            glUniform1f(uniformID, value[0]);
-    }
-}
 #endif

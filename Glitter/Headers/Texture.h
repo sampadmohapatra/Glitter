@@ -10,7 +10,7 @@
  * GL_TEXTURE0 vs location number 0
  * GL_TEXTURE0 is not equal to 0 (uniform location), but both are connected.
  * Texture sampler2D with location 0 will draw data from texture
- * bound/activated to GL_TEXTURE0. There is no need to set texture unit type
+ * bound/activated to GL_TEXTURE0. There is no need to set texture unit num
  * while/before texture is created. It only needs to be set before a draw
  * call happens, e.g., glDrawElements().
  */
@@ -33,7 +33,7 @@ public:
             GLenum texUnitEnum = GL_TEXTURE0, GLenum imageDataType = GL_UNSIGNED_BYTE);
 
     // Activate Texture before draw call
-    void Activate(const GLuint texUnitEnum = GL_INVALID_VALUE);
+    void Activate(GLuint texUnitEnum = GL_INVALID_VALUE);
     // Binds a texture
     void Bind() const;
     // Unbinds a texture

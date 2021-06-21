@@ -44,7 +44,7 @@ Texture::Texture(const char* imageName, GLenum texType, GLenum imageFormat,
     // Generates MipMaps
     glGenerateMipmap(m_texType);
 
-    // Deletes the image data as it is already in the OpenGL
+    // Deletes the image data as it is already stored in the OpenGL
     // texture object
     stbi_image_free(imgBytes);
 

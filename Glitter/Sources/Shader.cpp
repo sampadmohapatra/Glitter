@@ -61,15 +61,6 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile,
     glDeleteShader(fragmentShader);
 }
 
-void Shader::setUniformMatrix4fv(const char* uniformName, const glm::mat4& mat) {
-    // Gets the location of the uniform
-    GLuint uniformID = glGetUniformLocation(ID, uniformName);
-    // Shader needs to be activated before changing the value of a uniform
-    Activate();
-    // Sets the value of the uniform
-    glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(mat));
-}
-
 // Activates the Shader Program
 void Shader::Activate() const {
     glUseProgram(ID);
@@ -106,4 +97,40 @@ void Shader::compileErrors(unsigned int shader, const char* type) const {
                         << "\n" << infoLog << std::endl;
         }
     }
+}
+
+void Shader::setUniformi(const char *uniformName, std::vector<int> value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    Activate();
+    // Sets the value of the uniform
+    glUniform1i(uniformID, value[0]);
+}
+
+void Shader::setUniformf(const char *uniformName, std::vector<float> value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    Activate();
+    // Sets the value of the uniform
+    glUniform1f(uniformID, value[0]);
+}
+
+void Shader::setUniformui(const char *uniformName, std::vector<unsigned int> value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    Activate();
+    // Sets the value of the uniform
+    glUniform1ui(uniformID, value[0]);
+}
+
+void Shader::setUniformMat4(const char *uniformName, std::vector<glm::mat4> value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    Activate();
+    // Sets the value of the uniform
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value[0]));
 }
