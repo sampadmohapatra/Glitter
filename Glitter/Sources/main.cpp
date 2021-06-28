@@ -119,7 +119,7 @@ int main(int argc, char * argv[]) {
     }
 
     // Hide and capture mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Create Context and Load OpenGL Functions
     glfwMakeContextCurrent(window);
@@ -128,6 +128,22 @@ int main(int argc, char * argv[]) {
         return -1;
     }
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 400");
+
+    // Show demo window ?
+    bool show_demo_window = true;
 
     glViewport(0, 0, WIDTH, HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -182,6 +198,17 @@ int main(int argc, char * argv[]) {
 
     // Rendering Loop
     while (glfwWindowShouldClose(window) == false) {
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        if (show_demo_window)
+            ImGui::ShowDemoWindow(&show_demo_window);
+
+        // imgui Rendering
+        ImGui::Render();
+
         // Update time diff since last frame draw
         float currentFrameTime = glfwGetTime();
         deltaTime = currentFrameTime - lastFrameTime;
@@ -232,11 +259,20 @@ int main(int argc, char * argv[]) {
         }
         VAO1.unbindVAO();
 
+        // imgui
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         // Flip Buffers and Draw
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    // imgui cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    // opengl cleanup
     texture1.deleteTexture();
     texture2.deleteTexture();
     VBO1.deleteVBO();
@@ -244,6 +280,8 @@ int main(int argc, char * argv[]) {
     VAO1.deleteVAO();
     VAO2.deleteVAO();
 
+    // glfw cleanup
+    glfwDestroyWindow(window);
     glfwTerminate();
     return EXIT_SUCCESS;
 }

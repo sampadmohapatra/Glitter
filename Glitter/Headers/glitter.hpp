@@ -3,6 +3,11 @@
 #define GLITTER
 #pragma once
 
+// imgui Headers
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 // System Headers
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
