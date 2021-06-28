@@ -1,10 +1,6 @@
 // Local Headers
 #include "glitter.hpp"
 
-// System Headers
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 // Standard C Headers
 #include <cstdio>
 #include <cstdlib>
@@ -141,10 +137,10 @@ int main(int argc, char * argv[]) {
 
     // Create and bind buffers. Buffer data.
     VAO VAO1;
-    VAO1.Bind();
+    VAO1.bindVAO();
 
     VBO VBO1(vertices, sizeof(vertices));
-    VBO1.Bind();
+    VBO1.bindVBO();
     // vertex coordinates buffered in VBO
     VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float),
                     (void *) 0);
@@ -162,15 +158,15 @@ int main(int argc, char * argv[]) {
     Texture texture1("container.jpg", GL_TEXTURE_2D, GL_RGB);
     Texture texture2("awesomeface.png", GL_TEXTURE_2D, GL_RGBA);
 
-    VAO1.Unbind();
-    VBO1.Unbind();
+    VAO1.unbindVAO();
+    VBO1.unbindVBO();
 
     // Coordinate Axes
     VAO VAO2;
-    VAO2.Bind();
+    VAO2.bindVAO();
 
     VBO VBO2(axis, sizeof(axis));
-    VBO2.Bind();
+    VBO2.bindVBO();
 
     VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, 6 * sizeof(float),
                     (void *) 0);
@@ -179,8 +175,8 @@ int main(int argc, char * argv[]) {
     Shader drawCoordAxesShaderProg("xyz.vert", "xyz.frag",
                                    R"(..\..\Glitter\Shaders\)");
 
-    VAO2.Unbind();
-    VBO2.Unbind();
+    VAO2.unbindVAO();
+    VBO2.unbindVBO();
 
     glm::mat4 view, projection, model;
 
@@ -202,8 +198,8 @@ int main(int argc, char * argv[]) {
                 ,viewportWidth / viewportHeight, 0.1f, 100.0f);
 
         // Draw the coordinate Axes
-        drawCoordAxesShaderProg.Activate();
-        VAO2.Bind();
+        drawCoordAxesShaderProg.activateShader();
+        VAO2.bindVAO();
 
         drawCoordAxesShaderProg.setUniformMat4("view", {view});
         drawCoordAxesShaderProg.setUniformMat4("projection", {projection});
@@ -211,16 +207,16 @@ int main(int argc, char * argv[]) {
         glDrawArrays( GL_LINE_STRIP, 2, 2);
         glDrawArrays( GL_LINE_STRIP, 4, 2);
 
-        VAO2.Unbind();
+        VAO2.unbindVAO();
 
         // Enable Shader Program
-        shaderProg.Activate();
+        shaderProg.activateShader();
 
-        VAO1.Bind();
+        VAO1.bindVAO();
 
-        texture1.Activate(GL_TEXTURE0);
+        texture1.activateTexture(GL_TEXTURE0);
         shaderProg.setUniformi("sqTex1", {0});
-        texture2.Activate(GL_TEXTURE1);
+        texture2.activateTexture(GL_TEXTURE1);
         shaderProg.setUniformi("sqTex2", {1});
 
         shaderProg.setUniformMat4("view", {view});
@@ -234,12 +230,19 @@ int main(int argc, char * argv[]) {
             shaderProg.setUniformMat4("model", {model});
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        VAO1.Unbind();
+        VAO1.unbindVAO();
 
         // Flip Buffers and Draw
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    texture1.deleteTexture();
+    texture2.deleteTexture();
+    VBO1.deleteVBO();
+    VBO2.deleteVBO();
+    VAO1.deleteVAO();
+    VAO2.deleteVAO();
 
     glfwTerminate();
     return EXIT_SUCCESS;

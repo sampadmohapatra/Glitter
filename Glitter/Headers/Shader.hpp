@@ -1,26 +1,26 @@
 #ifndef SHADER_CLASS_H
 #define SHADER_CLASS_H
 
-#include <glad/glad.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <cerrno>
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-std::string get_file_contents(const char* filename, std::string relpath);
+#include "glad/glad.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
-class Shader
-{
+std::string getFileContents(const char* fileName, std::string relPath);
+
+class Shader {
 public:
     // Reference ID of the Shader Program
-    GLuint ID;
+    GLuint mID;
     // Constructor that build the Shader Program from 2 different shaders
     Shader(const char* vertexFile, const char* fragmentFile,
-           const char* relpath="");
+           const char* relPath="");
 
     // Set a Uniform in the Shader Program
     void setUniformi(const char* uniformName, std::vector<int> value);
@@ -29,9 +29,9 @@ public:
     void setUniformMat4(const char* uniformName, std::vector<glm::mat4> value);
 
     // Activates the Shader Program
-    void Activate() const;
+    void activateShader() const;
     // Deletes the Shader Program
-    void Delete() const;
+    void deleteShader() const;
 private:
     // Checks if the different Shaders have compiled properly
     void compileErrors(unsigned int shader, const char* type) const;

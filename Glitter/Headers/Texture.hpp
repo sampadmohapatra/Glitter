@@ -1,8 +1,8 @@
 #ifndef TEXTURE_CLASS_H
 #define TEXTURE_CLASS_H
 
-#include<glad/glad.h>
-#include<stb_image.h>
+#include "glad/glad.h"
+#include "stb_image.h"
 
 #include <iostream>
 
@@ -15,12 +15,11 @@
  * call happens, e.g., glDrawElements().
  */
 
-class Texture
-{
+class Texture {
 public:
-    GLuint m_ID;
-    GLenum m_texType;
-    GLenum m_texUnitNum;
+    GLuint mID;
+    GLenum mTexType;
+    GLenum mTexUnitNum;
 
     /*
      * @imageName Texture image filename with location
@@ -29,16 +28,17 @@ public:
      * @texUnitEnum Texture unit to be used, e.g., GL_TEXTURE0, GL_TEXTURE1 etc.
      * @imageDataType Data type of input texture image, e.g., GL_UNSIGNED_BYTE
      */
-    Texture(const char* imageName, GLenum texType, GLenum imageFormat,
-            GLenum texUnitEnum = GL_TEXTURE0, GLenum imageDataType = GL_UNSIGNED_BYTE);
+    Texture(const char* imageName, GLenum texType, GLenum imageFormat
+            , GLenum texUnitEnum = GL_TEXTURE0
+            , GLenum imageDataType = GL_UNSIGNED_BYTE);
 
     // Activate Texture before draw call
-    void Activate(GLuint texUnitEnum = GL_INVALID_VALUE);
+    void activateTexture(GLuint texUnitEnum = GL_INVALID_VALUE);
     // Binds a texture
-    void Bind() const;
+    void bindTexture() const;
     // Unbinds a texture
-    void Unbind() const;
+    void unbindTexture() const;
     // Deletes a texture
-    void Delete() const;
+    void deleteTexture() const;
 };
 #endif

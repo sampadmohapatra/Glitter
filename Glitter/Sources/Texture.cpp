@@ -1,11 +1,11 @@
-#include"Texture.h"
+#include "Texture.hpp"
 
 Texture::Texture(const char* imageName, GLenum texType, GLenum imageFormat,
                  GLenum texUnitEnum, GLenum imageDataType) {
     // Assigns the type of the texture to the texture object
-    m_texType = texType;
+    mTexType = texType;
     // Store texture unit number to be used
-    m_texUnitNum = texUnitEnum;
+    mTexUnitNum = texUnitEnum;
 
     // Stores the width, height, and the number of color channels of the image
     int imgWidth, imgHeight, numColChnls;
@@ -20,29 +20,29 @@ Texture::Texture(const char* imageName, GLenum texType, GLenum imageFormat,
     }
 
     // Generates an OpenGL texture object
-    glGenTextures(1, &m_ID);
+    glGenTextures(1, &mID);
 
     // Activate texture
-    Activate();
+    activateTexture();
 
     // Configures the type of algorithm that is used to make the image
     // smaller or bigger
-    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(mTexType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(mTexType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     // Configures the way the texture repeats (if it does at all)
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(mTexType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(mTexType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // Extra lines in case you choose to use GL_CLAMP_TO_BORDER
     // float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
     // glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
     // Assigns the image to the OpenGL Texture object
-    glTexImage2D(m_texType, 0, GL_RGBA, imgWidth, imgHeight, 0,
+    glTexImage2D(mTexType, 0, GL_RGBA, imgWidth, imgHeight, 0,
                  imageFormat, imageDataType, imgBytes);
     // Generates MipMaps
-    glGenerateMipmap(m_texType);
+    glGenerateMipmap(mTexType);
 
     // Deletes the image data as it is already stored in the OpenGL
     // texture object
@@ -50,25 +50,25 @@ Texture::Texture(const char* imageName, GLenum texType, GLenum imageFormat,
 
     // Unbinds the OpenGL Texture object so that it can't
     // accidentally be modified
-    glBindTexture(m_texType, 0);
+    glBindTexture(mTexType, 0);
 }
 
-void Texture::Activate(const GLuint texUnitEnum) {
+void Texture::activateTexture(const GLuint texUnitEnum) {
     if(texUnitEnum != GL_INVALID_VALUE){
-        m_texUnitNum = texUnitEnum;
+        mTexUnitNum = texUnitEnum;
     }
-    glActiveTexture(m_texUnitNum);
-    glBindTexture(m_texType, m_ID);
+    glActiveTexture(mTexUnitNum);
+    glBindTexture(mTexType, mID);
 }
 
-void Texture::Bind() const {
-    glBindTexture(m_texType, m_ID);
+void Texture::bindTexture() const {
+    glBindTexture(mTexType, mID);
 }
 
-void Texture::Unbind() const {
-    glBindTexture(m_texType, 0);
+void Texture::unbindTexture() const {
+    glBindTexture(mTexType, 0);
 }
 
-void Texture::Delete() const {
-    glDeleteTextures(1, &m_ID);
+void Texture::deleteTexture() const {
+    glDeleteTextures(1, &mID);
 }

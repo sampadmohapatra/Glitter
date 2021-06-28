@@ -1,11 +1,10 @@
-#include"Shader.h"
+#include "Shader.hpp"
 
 // Reads a text file and outputs a string with everything in the text file
-std::string get_file_contents(const char* filename, std::string relpath) {
-    std::string newfilename {filename};
-    std::ifstream in((relpath+newfilename).c_str(), std::ios::binary);
-    if (in)
-    {
+std::string getFileContents(const char* fileName, std::string relPath) {
+    std::string newfilename {fileName};
+    std::ifstream in((relPath+newfilename).c_str(), std::ios::binary);
+    if (in) {
         std::string contents;
         in.seekg(0, std::ios::end);
         contents.resize(in.tellg());
@@ -19,10 +18,10 @@ std::string get_file_contents(const char* filename, std::string relpath) {
 
 // Constructor that build the Shader Program from 2 different shaders
 Shader::Shader(const char* vertexFile, const char* fragmentFile,
-               const char* relpath) {
+               const char* relPath) {
     // Read vertexFile and fragmentFile and store the strings
-    std::string vertexCode = get_file_contents(vertexFile, relpath);
-    std::string fragmentCode = get_file_contents(fragmentFile, relpath);
+    std::string vertexCode = getFileContents(vertexFile, relPath);
+    std::string fragmentCode = getFileContents(fragmentFile, relPath);
 
     // Convert the shader source strings into character arrays
     const char* vertexSource = vertexCode.c_str();
@@ -47,14 +46,14 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile,
     compileErrors(fragmentShader, "FRAGMENT");
 
     // Create Shader Program Object and get its reference
-    ID = glCreateProgram();
+    mID = glCreateProgram();
     // Attach the Vertex and Fragment Shaders to the Shader Program
-    glAttachShader(ID, vertexShader);
-    glAttachShader(ID, fragmentShader);
+    glAttachShader(mID, vertexShader);
+    glAttachShader(mID, fragmentShader);
     // Wrap-up/Link all the shaders together into the Shader Program
-    glLinkProgram(ID);
+    glLinkProgram(mID);
     // Checks if Shaders linked successfully
-    compileErrors(ID, "PROGRAM");
+    compileErrors(mID, "PROGRAM");
 
     // Delete the now useless Vertex and Fragment Shader objects
     glDeleteShader(vertexShader);
@@ -62,13 +61,13 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile,
 }
 
 // Activates the Shader Program
-void Shader::Activate() const {
-    glUseProgram(ID);
+void Shader::activateShader() const {
+    glUseProgram(mID);
 }
 
 // Deletes the Shader Program
-void Shader::Delete() const {
-    glDeleteProgram(ID);
+void Shader::deleteShader() const {
+    glDeleteProgram(mID);
 }
 
 // Checks if the different Shaders have compiled properly
@@ -84,7 +83,7 @@ void Shader::compileErrors(unsigned int shader, const char* type) const {
         {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
             std::cout << "SHADER_COMPILATION_ERROR for:" << type
-                        << "\n" << infoLog << std::endl;
+                      << "\n" << infoLog << std::endl;
         }
     }
     else
@@ -94,43 +93,43 @@ void Shader::compileErrors(unsigned int shader, const char* type) const {
         {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
             std::cout << "SHADER_LINKING_ERROR for:" << type
-                        << "\n" << infoLog << std::endl;
+                      << "\n" << infoLog << std::endl;
         }
     }
 }
 
 void Shader::setUniformi(const char *uniformName, std::vector<int> value) {
     // Gets the location of the uniform
-    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
     // Shader needs to be activated before changing the value of a uniform
-    Activate();
+    activateShader();
     // Sets the value of the uniform
     glUniform1i(uniformID, value[0]);
 }
 
 void Shader::setUniformf(const char *uniformName, std::vector<float> value) {
     // Gets the location of the uniform
-    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
     // Shader needs to be activated before changing the value of a uniform
-    Activate();
+    activateShader();
     // Sets the value of the uniform
     glUniform1f(uniformID, value[0]);
 }
 
 void Shader::setUniformui(const char *uniformName, std::vector<unsigned int> value) {
     // Gets the location of the uniform
-    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
     // Shader needs to be activated before changing the value of a uniform
-    Activate();
+    activateShader();
     // Sets the value of the uniform
     glUniform1ui(uniformID, value[0]);
 }
 
 void Shader::setUniformMat4(const char *uniformName, std::vector<glm::mat4> value) {
     // Gets the location of the uniform
-    GLint uniformID = glGetUniformLocation(ID, uniformName);
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
     // Shader needs to be activated before changing the value of a uniform
-    Activate();
+    activateShader();
     // Sets the value of the uniform
     glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value[0]));
 }
