@@ -2,7 +2,7 @@
 ![Screenshot](http://i.imgur.com/MDo2rsy.jpg)
 
 ## Modifications
-No Longer boilerplate. Includes my additions. \
+OpenGL Experiments. No Longer boilerplate, includes my additions. Code taken from [learnopengl.com](http://www.learnopengl.com) and modified.\
 Also, includes code from https://github.com/VictorGordan/opengl-tutorials. Corresponding videos: https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 ## Summary

@@ -21,6 +21,7 @@
 #include <EBO.h>
 #include <Shader.h>
 #include <Texture.h>
+#include <Camera.hpp>
 
 // Reference: https://github.com/nothings/stb/blob/master/stb_image.h#L4
 // To use stb_image, add this in *one* C++ source file.

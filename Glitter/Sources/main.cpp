@@ -16,8 +16,18 @@
 #include <vector>
 
 // Forward Declarations
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void mouseCallback(GLFWwindow* window, double xPos, double yPos);
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+
+// Axes Data      // Vertex Coord     // Vertex Col
+float axis[] = {0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+                2.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+                0.0f, 2.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+                0.0f, 0.0f, 2.0f,   0.0f, 0.0f, 1.0f};
 
 // Data
 float vertices[] = {
@@ -82,6 +92,14 @@ glm::vec3 cubePositions[] = {
 // only inside this file.
 namespace {
     float viewportWidth, viewportHeight;
+
+    float deltaTime = 0.0f;	// Time between current frame and last frame
+    float lastFrameTime = 0.0f; // Time of last frame
+
+    Camera flyCam;
+    float lastX = WIDTH/2, lastY = HEIGHT/2;
+
+    bool bFirstMouse = true;
 }
 
 int main(int argc, char * argv[]) {
@@ -104,6 +122,9 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
 
+    // Hide and capture mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     // Create Context and Load OpenGL Functions
     glfwMakeContextCurrent(window);
     if (!gladLoadGL()) {
@@ -113,7 +134,9 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
     glViewport(0, 0, WIDTH, HEIGHT);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+    glfwSetCursorPosCallback(window, mouseCallback);
+    glfwSetScrollCallback(window, scrollCallback);
     glEnable(GL_DEPTH_TEST);
 
     // Create and bind buffers. Buffer data.
@@ -127,8 +150,8 @@ int main(int argc, char * argv[]) {
                     (void *) 0);
 
     // Create shaders and Link with shader program
-    Shader shaderProgram("default.vert", "default.frag",
-                         R"(..\..\Glitter\Shaders\)");
+    Shader shaderProg("default.vert", "default.frag",
+                      R"(..\..\Glitter\Shaders\)");
 
     // texture coordinates buffered in VBO
     VAO1.LinkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float),
@@ -142,39 +165,73 @@ int main(int argc, char * argv[]) {
     VAO1.Unbind();
     VBO1.Unbind();
 
-    glm::mat4 model, view, projection;
+    // Coordinate Axes
+    VAO VAO2;
+    VAO2.Bind();
+
+    VBO VBO2(axis, sizeof(axis));
+    VBO2.Bind();
+
+    VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, 6 * sizeof(float),
+                    (void *) 0);
+    VAO2.LinkAttrib(VBO2, 1, 3, GL_FLOAT, 6 * sizeof(float),
+                    (void *) (3 * sizeof(float)));
+    Shader drawCoordAxesShaderProg("xyz.vert", "xyz.frag",
+                                   R"(..\..\Glitter\Shaders\)");
+
+    VAO2.Unbind();
+    VBO2.Unbind();
+
+    glm::mat4 view, projection, model;
 
     // Rendering Loop
     while (glfwWindowShouldClose(window) == false) {
+        // Update time diff since last frame draw
+        float currentFrameTime = glfwGetTime();
+        deltaTime = currentFrameTime - lastFrameTime;
+        lastFrameTime = currentFrameTime;
+
         processInput(window);
 
         // Background Fill Color
         glClearColor((float)100/255, (float)38/255, (float)101/255, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        view = flyCam.getViewMatrix();
+        projection = glm::perspective(glm::radians(flyCam.getFOV())
+                ,viewportWidth / viewportHeight, 0.1f, 100.0f);
+
+        // Draw the coordinate Axes
+        drawCoordAxesShaderProg.Activate();
+        VAO2.Bind();
+
+        drawCoordAxesShaderProg.setUniformMat4("view", {view});
+        drawCoordAxesShaderProg.setUniformMat4("projection", {projection});
+        glDrawArrays( GL_LINE_STRIP, 0, 2);
+        glDrawArrays( GL_LINE_STRIP, 2, 2);
+        glDrawArrays( GL_LINE_STRIP, 4, 2);
+
+        VAO2.Unbind();
+
         // Enable Shader Program
-        shaderProgram.Activate();
+        shaderProg.Activate();
 
         VAO1.Bind();
 
         texture1.Activate(GL_TEXTURE0);
-        shaderProgram.setUniformi("sqTex1", {0});
+        shaderProg.setUniformi("sqTex1", {0});
         texture2.Activate(GL_TEXTURE1);
-        shaderProgram.setUniformi("sqTex2", {1});
-        // Note: Below three transforms create projection * view * model.
-        // Resulting matrix will be multiplied left multiplied with vertex coordinates
+        shaderProg.setUniformi("sqTex2", {1});
+
+        shaderProg.setUniformMat4("view", {view});
+        shaderProg.setUniformMat4("projection", {projection});
+
         for(auto& pos:cubePositions) {
             model = glm::mat4(1.0f);
             model = glm::translate(model, pos);
-            model = glm::rotate(model, (float) glfwGetTime(),
+            model = glm::rotate(model, currentFrameTime,
                                 glm::vec3(0.5f, 1.0f, 0.0f));
-            view = glm::mat4(1.0f);
-            view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
-            projection = glm::perspective(glm::radians(45.0f),
-                                          viewportWidth / viewportHeight, 0.1f, 100.0f);
-            shaderProgram.setUniformMat4("model", {model});
-            shaderProgram.setUniformMat4("view", {view});
-            shaderProgram.setUniformMat4("projection", {projection});
+            shaderProg.setUniformMat4("model", {model});
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         VAO1.Unbind();
@@ -188,7 +245,7 @@ int main(int argc, char * argv[]) {
     return EXIT_SUCCESS;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
     viewportWidth = width;
     viewportHeight = height;
@@ -197,4 +254,34 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 void processInput(GLFWwindow* window) {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    // Check and update Camera position/rotation
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        flyCam.processKeyboard(CameraMovement::FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        flyCam.processKeyboard(CameraMovement::BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        flyCam.processKeyboard(CameraMovement::LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        flyCam.processKeyboard(CameraMovement::RIGHT, deltaTime);
+}
+
+void mouseCallback(GLFWwindow* window, double xPos, double yPos) {
+    if (bFirstMouse) { // initially set to true
+        lastX = xPos;
+        lastY = yPos;
+        bFirstMouse = false;
+    }
+
+    float xOffset = xPos - lastX;
+    // reversed since y-coordinates range from bottom to top
+    float yOffset = lastY - yPos;
+    lastX = xPos;
+    lastY = yPos;
+
+    flyCam.processMouseMovement(xOffset, yOffset);
+}
+
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+    flyCam.processMouseScroll(yOffset);
 }
