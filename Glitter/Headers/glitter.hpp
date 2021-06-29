@@ -38,7 +38,7 @@
 #include "GLFW/glfw3.h"
 
 // Define Some Constants
-constexpr int WIDTH = 800;
-constexpr int HEIGHT = 600;
+constexpr int WIDTH = 1600;
+constexpr int HEIGHT = 900;
 
 #endif //~ Glitter Header

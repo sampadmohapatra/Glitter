@@ -26,7 +26,9 @@ public:
     void setUniformi(const char* uniformName, std::vector<int> value);
     void setUniformf(const char* uniformName, std::vector<float> value);
     void setUniformui(const char* uniformName, std::vector<unsigned int> value);
-    void setUniformMat4(const char* uniformName, std::vector<glm::mat4> value);
+    void setUniformVec(const char* uniformName, std::vector<float> value);
+    void setUniformVec3(const char* uniformName, glm::vec3& value);
+    void setUniformMat4(const char* uniformName, glm::mat4& value);
 
     // Activates the Shader Program
     void activateShader() const;

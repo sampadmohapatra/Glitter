@@ -27,47 +27,47 @@ float axis[] = {0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
 
 // Data
 float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+        0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
 glm::vec3 cubePositions[] = {
@@ -84,18 +84,21 @@ glm::vec3 cubePositions[] = {
 };
 
 // anonymous namespace
-// width and height are available
-// only inside this file.
+// variables are available only inside this file.
 namespace {
     float viewportWidth, viewportHeight;
 
-    float deltaTime = 0.0f;	// Time between current frame and last frame
+    float deltaTime = 0.0f; // Time between current frame and last frame
     float lastFrameTime = 0.0f; // Time of last frame
 
-    Camera flyCam;
+    Camera flyCam({0.0, 0.0, 3.0f});
     float lastX = WIDTH/2, lastY = HEIGHT/2;
 
+    // bool to allow camera position to be set on first mouse click
     bool bFirstMouse = true;
+
+    // light source
+    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 }
 
 int main(int argc, char * argv[]) {
@@ -118,8 +121,11 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
 
+    // window position
+    glfwSetWindowPos(window, 100, 50);
+
     // Hide and capture mouse
-//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Create Context and Load OpenGL Functions
     glfwMakeContextCurrent(window);
@@ -136,14 +142,13 @@ int main(int argc, char * argv[]) {
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 400");
 
     // Show demo window ?
-    bool show_demo_window = true;
+    bool show_demo_window = false;
 
     glViewport(0, 0, WIDTH, HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -151,50 +156,54 @@ int main(int argc, char * argv[]) {
     glfwSetScrollCallback(window, scrollCallback);
     glEnable(GL_DEPTH_TEST);
 
-    // Create and bind buffers. Buffer data.
-    VAO VAO1;
-    VAO1.bindVAO();
-
-    VBO VBO1(vertices, sizeof(vertices));
-    VBO1.bindVBO();
-    // vertex coordinates buffered in VBO
-    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float),
-                    (void *) 0);
-
-    // Create shaders and Link with shader program
-    Shader shaderProg("default.vert", "default.frag",
-                      R"(..\..\Glitter\Shaders\)");
-
-    // texture coordinates buffered in VBO
-    VAO1.LinkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float),
-                    (void *) (3 * sizeof(float)));
-
-    // textures
-    // --------
-    Texture texture1("container.jpg", GL_TEXTURE_2D, GL_RGB);
-    Texture texture2("awesomeface.png", GL_TEXTURE_2D, GL_RGBA);
-
-    VAO1.unbindVAO();
-    VBO1.unbindVBO();
-
     // Coordinate Axes
-    VAO VAO2;
-    VAO2.bindVAO();
+    VAO axesVAO;
+    axesVAO.bindVAO();
 
-    VBO VBO2(axis, sizeof(axis));
-    VBO2.bindVBO();
+    VBO axesVBO(axis, sizeof(axis));
+    axesVAO.LinkAttrib(axesVBO, 0, 3, GL_FLOAT, 6 * sizeof(float),
+                       (void *) 0);
+    axesVAO.LinkAttrib(axesVBO, 1, 3, GL_FLOAT, 6 * sizeof(float),
+                       (void *) (3 * sizeof(float)));
 
-    VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, 6 * sizeof(float),
-                    (void *) 0);
-    VAO2.LinkAttrib(VBO2, 1, 3, GL_FLOAT, 6 * sizeof(float),
-                    (void *) (3 * sizeof(float)));
+    axesVAO.unbindVAO();
+
     Shader drawCoordAxesShaderProg("xyz.vert", "xyz.frag",
                                    R"(..\..\Glitter\Shaders\)");
 
-    VAO2.unbindVAO();
-    VBO2.unbindVBO();
+    // Cube Object
+    VAO cubeVAO;
+    cubeVAO.bindVAO();
 
-    glm::mat4 view, projection, model;
+    VBO cubeVBO(vertices, sizeof(vertices));
+    cubeVAO.LinkAttrib(cubeVBO, 0, 3, GL_FLOAT, 6 * sizeof(float),
+                       (void *) 0);
+    cubeVAO.LinkAttrib(cubeVBO, 1, 3, GL_FLOAT, 6 * sizeof(float),
+                       (void *) (3 * sizeof(float)));
+    cubeVAO.unbindVAO();
+
+
+    Shader objShaderProg("default.vert", "default.frag",
+                         R"(..\..\Glitter\Shaders\)");
+    objShaderProg.setUniformVec("vObjectColor", {1.0f, 0.5f, 0.31f});
+    objShaderProg.setUniformVec3("vLightPos", lightPos);
+    objShaderProg.setUniformVec("vLightColor", {1.0f, 1.0f, 1.0f});
+
+    // Light Source
+    VAO lightVAO;
+    lightVAO.bindVAO();
+
+    // Using the cube VBO to represent the light source
+    lightVAO.LinkAttrib(cubeVBO, 0, 3, GL_FLOAT, 6 * sizeof(float),
+                        (void *) 0);
+
+    lightVAO.unbindVAO();
+
+    Shader lightShaderProg("lightSrc.vert", "lightSrc.frag",
+                           R"(..\..\Glitter\Shaders\)");
+    lightShaderProg.setUniformVec3("vLightPos", lightPos);
+
+    glm::mat4 view, projection, model, normalMatrix;
 
     // Rendering Loop
     while (glfwWindowShouldClose(window) == false) {
@@ -217,47 +226,57 @@ int main(int argc, char * argv[]) {
         processInput(window);
 
         // Background Fill Color
-        glClearColor((float)100/255, (float)38/255, (float)101/255, 1.0f);
+//        glClearColor((float)100/255, (float)38/255, (float)101/255, 1.0f);
+        glClearColor(0.0, 0.0, 0.0, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Calculate view and projection matrices
         view = flyCam.getViewMatrix();
         projection = glm::perspective(glm::radians(flyCam.getFOV())
                 ,viewportWidth / viewportHeight, 0.1f, 100.0f);
 
         // Draw the coordinate Axes
         drawCoordAxesShaderProg.activateShader();
-        VAO2.bindVAO();
+        drawCoordAxesShaderProg.setUniformMat4("view", view);
+        drawCoordAxesShaderProg.setUniformMat4("projection", projection);
 
-        drawCoordAxesShaderProg.setUniformMat4("view", {view});
-        drawCoordAxesShaderProg.setUniformMat4("projection", {projection});
+        axesVAO.bindVAO();
         glDrawArrays( GL_LINE_STRIP, 0, 2);
         glDrawArrays( GL_LINE_STRIP, 2, 2);
         glDrawArrays( GL_LINE_STRIP, 4, 2);
+        axesVAO.unbindVAO();
 
-        VAO2.unbindVAO();
+        // Draw Light
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.1f));
 
-        // Enable Shader Program
-        shaderProg.activateShader();
+        lightShaderProg.activateShader();
+        lightShaderProg.setUniformMat4("model", model);
+        lightShaderProg.setUniformMat4("view", view);
+        lightShaderProg.setUniformMat4("projection", projection);
 
-        VAO1.bindVAO();
+        lightVAO.bindVAO();
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        lightVAO.unbindVAO();
 
-        texture1.activateTexture(GL_TEXTURE0);
-        shaderProg.setUniformi("sqTex1", {0});
-        texture2.activateTexture(GL_TEXTURE1);
-        shaderProg.setUniformi("sqTex2", {1});
+        // Draw Object
+        objShaderProg.activateShader();
 
-        shaderProg.setUniformMat4("view", {view});
-        shaderProg.setUniformMat4("projection", {projection});
+        model = glm::mat4(1.0f);
+//        model = glm::translate(model, glm::vec3(0.0, 0.0, -3.0));
+//        model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.25f));
+        normalMatrix = glm::transpose(glm::inverse(model));
 
-        for(auto& pos:cubePositions) {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, pos);
-            model = glm::rotate(model, currentFrameTime,
-                                glm::vec3(0.5f, 1.0f, 0.0f));
-            shaderProg.setUniformMat4("model", {model});
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
-        VAO1.unbindVAO();
+        objShaderProg.setUniformMat4("view", view);
+        objShaderProg.setUniformMat4("projection", projection);
+        objShaderProg.setUniformMat4("model", model);
+        objShaderProg.setUniformMat4("normalMatrix", normalMatrix);
+        objShaderProg.setUniformVec3("vViewerPos", flyCam.mPosition);
+
+        cubeVAO.bindVAO();
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        cubeVAO.unbindVAO();
 
         // imgui
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -273,12 +292,11 @@ int main(int argc, char * argv[]) {
     ImGui::DestroyContext();
 
     // opengl cleanup
-    texture1.deleteTexture();
-    texture2.deleteTexture();
-    VBO1.deleteVBO();
-    VBO2.deleteVBO();
-    VAO1.deleteVAO();
-    VAO2.deleteVAO();
+    cubeVBO.deleteVBO();
+    axesVBO.deleteVBO();
+    cubeVAO.deleteVAO();
+    axesVAO.deleteVAO();
+    lightVAO.deleteVAO();
 
     // glfw cleanup
     glfwDestroyWindow(window);

@@ -125,11 +125,41 @@ void Shader::setUniformui(const char *uniformName, std::vector<unsigned int> val
     glUniform1ui(uniformID, value[0]);
 }
 
-void Shader::setUniformMat4(const char *uniformName, std::vector<glm::mat4> value) {
+void Shader::setUniformVec(const char* uniformName, std::vector<float> value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    activateShader();
+    // Sets the value of the uniform depending on length of vector
+    switch(value.size()) {
+        case 1:
+            glUniform1fv( uniformID, 1, value.data());
+            break;
+        case 2:
+            glUniform2fv( uniformID, 1, value.data());
+            break;
+        case 3:
+            glUniform3fv( uniformID, 1, value.data());
+            break;
+        case 4:
+            glUniform4fv( uniformID, 1, value.data());
+            break;
+    }
+}
+
+void Shader::setUniformVec3(const char* uniformName, glm::vec3& value) {
+    // Gets the location of the uniform
+    GLint uniformID = glGetUniformLocation(mID, uniformName);
+    // Shader needs to be activated before changing the value of a uniform
+    activateShader();
+    glUniform3fv( uniformID, 1, glm::value_ptr(value));
+}
+
+void Shader::setUniformMat4(const char *uniformName, glm::mat4& value) {
     // Gets the location of the uniform
     GLint uniformID = glGetUniformLocation(mID, uniformName);
     // Shader needs to be activated before changing the value of a uniform
     activateShader();
     // Sets the value of the uniform
-    glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value[0]));
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value));
 }
